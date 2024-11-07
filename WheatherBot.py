@@ -5,7 +5,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 import requests
 from bs4 import BeautifulSoup as BS
 
-API_TOKEN = '7746970876:AAHz32CAbOgBpRnW8WJIt3v_fMcsV8lHJuk'
+API_TOKEN = '7786275569:AAH6f4wT1BXmfqNj6yd5A7dNkVmOp9ohuXg'
 
 logging.basicConfig(level=logging.INFO)
 
@@ -31,6 +31,7 @@ for tosh in html_t.select('#content'):
     max_temp = tosh.select('.temperature .max')[0].text
     t_min = min_temp[4:]
     t_max = max_temp[5:]
+    temperature1 = tosh.find('p', class_='today-temp').get_text()
 
 # Samarqand shahri ob-havo ma'lumotlari
 samarkand = requests.get('https://sinoptik.ua/погода-самарканд')
@@ -40,7 +41,7 @@ for sam in html_s.select('#content'):
     max_s = sam.select('.temperature .max')[0].text
     s_min = min_s[4:]
     s_max = max_s[5:]
-
+    temperature2 = sam.find('p', class_='today-temp').get_text()
 # Navoiy shahri ob-havo ma'lumotlari
 navoi_y = requests.get('https://sinoptik.ua/погода-навои')
 html_n = BS(navoi_y.content, 'html.parser')
@@ -49,7 +50,7 @@ for nav in html_n.select("#content"):
     max_n = nav.select('.temperature .max')[0].text
     n_min = min_n[4:]
     n_max = max_n[5:]
-
+    temperature3 = nav.find('p', class_='today-temp').get_text()
 # Buxoro shahri ob-havo ma'lumotlari
 buxor_o = requests.get('https://sinoptik.ua/погода-бухара')
 html_b = BS(buxor_o.content, 'html.parser')
@@ -58,7 +59,7 @@ for bux in html_b.select('#content'):
     max_b = bux.select('.temperature .max')[0].text
     b_min = min_b[4:]
     b_max = max_b[5:]
-
+    temperature4 = bux.find('p', class_='today-temp').get_text()
 # Andijon viloyati ob-havo ma'lumotlari
 andijo_n = requests.get('https://sinoptik.ua/погода-андижан')
 html_a = BS(andijo_n.content, 'html.parser')
@@ -67,7 +68,7 @@ for an in html_a.select('#content'):
     max_a = an.select('.temperature .max')[0].text
     a_min = min_a[4:]
     a_max = max_a[4:]
-
+    temperature5 = an.find('p', class_='today-temp').get_text()
 # Farg'ona viloyati ob-havo ma'lumotlari
 fargon_a = requests.get('https://sinoptik.ua/погода-фергана')
 html_f = BS(fargon_a.content, 'html.parser')
@@ -76,7 +77,7 @@ for far in html_f.select('#content'):
     max_f = far.select('.temperature .max')[0].text
     f_min = min_f[4:]
     f_max = max_f[5:]
-
+    temperature6 = far.find('p', class_='today-temp').get_text()
 # Namangan viloyati ob-havo ma'lumotlari
 namanga_n = requests.get('https://sinoptik.ua/погода-наманган')
 html_nam = BS(namanga_n.content, 'html.parser')
@@ -85,7 +86,7 @@ for nam in html_nam.select('#content'):
     max_nam = nam.select('.temperature .max')[0].text
     nam_min = min_nam[4:]
     nam_max = max_nam[5:]
-
+    temperature7 = nam.find('p', class_='today-temp').get_text()
 # Xorazm viloyati ob-havo ma'lumotlari
 xoraz_m = requests.get('https://sinoptik.ua/погода-ургенч')
 html_xor = BS(xoraz_m.content, 'html.parser')
@@ -94,7 +95,7 @@ for xor in html_xor.select('#content'):
     max_xor = xor.select('.temperature .max')[0].text
     xor_min = min_xor[4:]
     xor_max = max_xor[5:]
-
+    temperature8 = xor.find('p', class_='today-temp').get_text()
 # Jizzax viloyati ob-havo ma'lumotlari
 jizza_x = requests.get('https://sinoptik.ua/погода-джизак')
 html_jiz = BS(jizza_x.content, 'html.parser')
@@ -103,7 +104,7 @@ for jiz in html_jiz.select('#content'):
     max_jiz = jiz.select('.temperature .max')[0].text
     jiz_min = min_jiz[4:]
     jiz_max = max_jiz[5:]
-
+    temperature9 = jiz.find('p', class_='today-temp').get_text()
 # Sirdaryo viloyati ob-havo ma'lumotlari
 sirdary_o = requests.get('https://sinoptik.ua/погода-сырдарья')
 html_sir = BS(sirdary_o.content, 'html.parser')
@@ -112,7 +113,7 @@ for sir in html_sir.select('#content'):
     max_sir = sir.select('.temperature .max')[0].text
     sir_min = min_sir[4:]
     sir_max = max_sir[5:]
-
+    temperature10 = sir.find('p', class_='today-temp').get_text()
 
 
 # Callback query handler
@@ -122,25 +123,35 @@ async def process_callback(query: types.CallbackQuery):
     data = query.data
 
     if data == "01":
-        await query.message.edit_text(f"Toshkent: min {t_min}, max {t_max} ⛅", reply_markup=back())
+        await query.message.edit_text(f"Bugun Toshkent shaxrida havo o`zgarib turadi\nmin {t_min}\nmax "
+                                f"{t_max} \nbo`lishi kutilmoqda ⛅\nHozirgi temperatura {temperature1}", reply_markup=back())
     elif data == "02":
-        await query.message.edit_text(f"Samarqand: min {s_min}, max {s_max} ⛅", reply_markup=back())
+        await query.message.edit_text(f"Bugun Samarqand shahrida havo o'zgarib turadi\nmin {s_min}\nmax "
+                                f"{s_max} \nbo'lishi kutilmoqda ⛅\nHozirgi temperatura {temperature2}", reply_markup=back())
     elif data == "03":
-        await query.message.edit_text(f"Navoiy: min {n_min}, max {n_max} ⛅", reply_markup=back())
+        await query.message.edit_text(f"Bugun Navoiy viloyatida havo o'zgarib turadi\nmin {n_min} "
+                                f"Max {n_max} bo'lishi kutilmoqda ⛅\nHozirgi temperatura {temperature3}", reply_markup=back())
     elif data == "04":
-        await query.message.edit_text(f"Buxoro: min {b_min}, max {b_max} ⛅", reply_markup=back())
+        await query.message.edit_text(f"Bugun Buxoro viloyatida havo o'zgarib turadi\nmin {n_min} "
+                                f"Max {n_max} bo'lishi kutilmoqda ⛅\nHozirgi temperatura {temperature4}", reply_markup=back())
     elif data == "05":
-        await query.message.edit_text(f"Andijon: min {a_min}, max {a_max} ⛅", reply_markup=back())
+        await query.message.edit_text(f"Bugun Andijon viloyatida havo o'zgarib turadi\nmin {a_min} "
+                                f"Max {a_max} bo'lishi kutilmoqda ⛅\nHozirgi temperatura {temperature5}", reply_markup=back())
     elif data == "06":
-        await query.message.edit_text(f"Farg'ona: min {f_min}, max {f_max} ⛅", reply_markup=back())
+        await query.message.edit_text(f"Bugun Farg'ona viloyatida havo o'zgarib turadi\nmin {f_min} "
+                                f"Max {f_max} bo'lishi kutilmoqda ⛅\nHozirgi temperatura {temperature6}", reply_markup=back())
     elif data == "07":
-        await query.message.edit_text(f"Namangan: min {nam_min}, max {nam_max} ⛅", reply_markup=back())
+        await query.message.edit_text(f"Bugun Namangan viloyatida havo o'zgarib turadi\nmin {nam_min} "
+                                f"Max {nam_max} bo'lishi kutilmoqda ⛅\nHozirgi temperatura {temperature7}", reply_markup=back())
     elif data == "08":
-        await query.message.edit_text(f"Xorazm: min {xor_min}, max {xor_max} ⛅", reply_markup=back())
+        await query.message.edit_text(f"Bugun Xorazm viloyatida havo o'zgarib turadi\nmin {xor_min} "
+                                f"Max {xor_max} bo'lishi kutilmoqda ⛅\nHozirgi temperatura {temperature8}", reply_markup=back())
     elif data == "09":
-        await query.message.edit_text(f"Jizzax: min {jiz_min}, max {jiz_max} ⛅", reply_markup=back())
+        await query.message.edit_text(f"Bugun Jizzax viloyatida havo o'zgarib turadi\nmin {jiz_min} "
+                                f"Max {xor_max} bo'lishi kutilmoqda ⛅\nHozirgi temperatura {temperature9}", reply_markup=back())
     elif data == "10":
-        await query.message.edit_text(f"Sirdaryo: min {sir_min}, max {sir_max} ⛅", reply_markup=back())
+        await query.message.edit_text(f"Bugun Sirdaryo viloyatida havo o'zgarib turadi\nmin {sir_min} "
+                                f"Max {sir_max} bo'lishi kutilmoqda ⛅\nHozirgi temperatura {temperature10}", reply_markup=back())
     elif data == "11":
         await query.message.edit_text("Surxandaryo: Havo ma'lumotlari mavjud emas ⛅", reply_markup=back())
     elif data == "back1":
